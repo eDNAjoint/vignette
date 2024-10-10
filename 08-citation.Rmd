@@ -1,0 +1,5 @@
+# Citation
+
+Using eDNAjoint for a paper you are writing? Consider citing it:
+
+Keller A (2024). eDNAjoint: Joint Modeling of Traditional and Environmental DNA Survey Data. R package version 0.2, https://docs.ropensci.org/eDNAjoint/, https://github.com/ropensci/eDNAjoint.

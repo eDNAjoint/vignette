@@ -1,0 +1,94 @@
+# The model {#model}
+
+Below is a representation of the full model used in *eDNAjoint*, including all model variations. Note that inclusion of gear scaling coefficients, $q_k$ (Eq. 2), and the regression with site-level covariates, $\alpha$ (Eq. 4), are optional in implementation with *eDNAjoint*.
+
+A reduced version of the joint model without these variations is also described in [Keller et al. 2022](https://doi.org/10.1002/eap.2561).
+
+## Model description {#modeldescription}
+
+The observed count, Y, of a species at site, *i*, in traditional survey sample, *j*, of gear type, *k*, is drawn from either
+
+1.  a negative binomial distribution with expected species catch rate, $\mu_{i,k}$, and an overdispersion parameter, $\phi$ (Equation 1.1)
+2.  a poisson distribution with expected species catch rate, $\mu_{i,k}$ (Equation 1.2).
+
+A third option allows for repeated continuous observations, Y, of a species at site, *i*, in traditional survey sample, *j*, of gear type, *k*.
+
+3.  a gamma distribution with shape parameter, $\alpha_{mu}$ and rate parameter, $\beta_{mu}$. The expected species catch rate, $\mu_{i,k}$ is equal to $\frac{\alpha_{mu}}{\beta_{mu}}$.
+
+```{=tex}
+\begin{equation}
+\tag{Eq. 1.1}
+Y_{i,j,k} \sim NegativeBinomial(\mu_{i,k}, \phi) 
+\end{equation}
+```
+```{=tex}
+\begin{equation}
+\tag{Eq. 1.2}
+Y_{i,j,k} \sim Poisson(\mu_{i,k}) 
+\end{equation}
+```
+```{=tex}
+\begin{equation}
+\tag{Eq. 1.3}
+Y_{i,j,k} \sim Gamma(\alpha_{mu,i,k}, \beta_{mu,i,k}) 
+\end{equation}
+```
+Gear scaling coefficients, $q_k$, scale the catch rates of multiple gear types relative to gear type 1 (Equation 2).
+
+```{=tex}
+\begin{equation}
+\tag{Eq. 2}
+\mu_{i,k} = q_k * \mu_{i,1}
+\end{equation}
+```
+The probability of a true positive eDNA detection, $p_{11}$, at site *i*, is a function of expected species catch rate, $\mu_{i,1}$ and scaling coefficient $\beta_i$ (Equation 3).
+
+```{=tex}
+\begin{equation}
+\tag{Eq. 3}
+p_{11,i} = \frac{\mu_{i,1}}{\mu_{i,1} + e^{\beta_i}}
+\end{equation}
+```
+The scaling coefficient $\beta_i$ relates the sensitivity of eDNA sampling to the expected species catch rate and is a function of site-level covariate coefficients, $\alpha_n$ and site-level covariate data, $A_{i,n}$ (Equation 4).
+
+```{=tex}
+\begin{equation}
+\tag{Eq. 4}
+\beta_i = A_{i,n}^{T} \cdot \alpha_n
+\end{equation}
+```
+The total probability of eDNA detection at site *i*, $p_i$, is the sum of the probability of a true positive eDNA detection at site *i*, $p_{11,i}$, and the probability of a false positive eDNA detection, $p_{10}$ (Equation 5).
+
+```{=tex}
+\begin{equation}
+\tag{Eq. 5}
+p_i = p_{11,i} + p_{10}
+\end{equation}
+```
+The number of positive quantitative PCR (qPCR) eDNA detections, K, out of the number of trials, N, in eDNA water sample *m* at site *i* is drawn from a binomial distribution, with a probability of success on a single trial, $p_i$. (Equation 6).
+
+```{=tex}
+\begin{equation}
+\tag{Eq. 6}
+K_{i,m} \sim Binomial(N_{i,m}, p_i)
+\end{equation}
+```
+Three informative prior distributions are included in the model for parameters, $p_{10}$, $\alpha_n$, and $\phi$ (if a negative binomial distribution is used to describe the traditional survey observations, Eq. 1.2). See below for more details.
+
+\begin{equation}
+p_{10} \sim Beta(\alpha, \beta)
+\end{equation} \begin{equation}
+\phi \sim Gamma(\alpha, \beta)
+\end{equation} \begin{equation}
+\alpha_n \sim Normal(0,10)
+\end{equation}
+
+## Bayesian modeling: Stan
+
+The models that can be run with *eDNAjoint* use Bayesian inference for parameter estimation. The models are specified in the probabilistic programming language, [Stan](https://mc-stan.org/rstan/), which uses Hamiltonian Monte Carlo to obtain posterior simulations. For this reason, all the models fit using *eDNAjoint* are of the 'stanfit' class and can be analyzed and manipulated with functions in the *rstan* package, in addition to the functions outlined above.
+
+The code for the models written in Stan can be found in [this folder](https://github.com/abigailkeller/eDNAjoint/tree/master/inst/stan) of the package Github repo.
+
+## Priors
+
+Three non-uniform priors are used in the model. First, there is an informative prior distribution for the false positive probability of eDNA detection, $p_{10}$, which is used for parameter identifiability. A beta distribution is used for the $p_{10}$ prior with two parameters: alpha and beta. Second, an informative prior distribution for the overdispersion parameter, $\phi$, in the negative binomial distribution for overdispersed count observations (Eq. 1.2). In *eDNAjoint*, these parameters can be user-specified. The default specification for the $p_{10}$ prior is beta(1,20) (mean: 0.048, var: 0.045), and the default specification for the $\phi$ prior is gamma(0.25,0.25) (mean: 1, var: 4). Additionally, a normally distributed [shrinkage prior](https://doi.org/10.1016/j.jmp.2018.12.004) is used for $\alpha_n$, which serves a similar role to regularization.

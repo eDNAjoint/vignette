@@ -1,0 +1,16 @@
+# References
+
+van Erp, S., Oberski, D.L., Mulder, J. (2019). Shrinkage priors for Bayesian penalized regression. *Journal of Mathematical Psychology*. 89, 31-50. [https://doi.org/10.1016/j.jmp.2018.12.004](https://doi.org/10.1016/j.jmp.2018.12.004)
+
+Keller, A.G., Grason, E.W., McDonald, P.S., Ramon-Laca, A., Kelly, R.P. (2022). Tracking an invasion front with environmental DNA. *Ecological Applications*. 32(4): e2561. [https://doi.org/10.1002/eap.2561](https://doi.org/10.1002/eap.2561)
+
+Schmelzle, M.C. and Kinziger, A.P. (2016). Using occupancy modelling to compare environmental DNA to traditional field methods for regional-scale monitoring of an endangered aquatic species. *Molecular Ecology Resources*. 16(4): 895-908. [https://doi.org/10.1111/1755-0998.12501](https://doi.org/10.1002/eap.2561)
+
+Stan Development Team (2023). RStan: the R interface to Stan. R package version 2.21.8. [https://mc-stan.org/](https://mc-stan.org/).
+
+Vehtari A, Gabry J, Magnusson M, Yao Y, Bürkner P, Paananen T, Gelman A (2022). “loo: Efficient
+leave-one-out cross-validation and WAIC for Bayesian models.” R package version 2.5.1,
+[https://mc-stan.org/loo/](https://mc-stan.org/loo/)
+
+Vehtari, A., Gelman, A., Gabry, J. (2017). Practical Bayesian model evaluation using leave-one-out cross-validation and WAIC. *Statistics and Computing*. 27, 1413-1432. 
+[https://doi.org/10.1007/s11222-016-9696-4](https://doi.org/10.1007/s11222-016-9696-4)

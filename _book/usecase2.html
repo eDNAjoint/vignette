@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Use case 2: jointModel() with site-level covariates | eDNAjoint: an R package for interpreting paired or semi-paired environmental DNA and traditional survey data in a Bayesian framework</title>
+  <meta name="description" content="Chapter 4 Use case 2: jointModel() with site-level covariates | eDNAjoint: an R package for interpreting paired or semi-paired environmental DNA and traditional survey data in a Bayesian framework" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Use case 2: jointModel() with site-level covariates | eDNAjoint: an R package for interpreting paired or semi-paired environmental DNA and traditional survey data in a Bayesian framework" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://bookdown.org/abigailkeller/eDNAjoint/images/eDNAjoint_logo.png" />
+  
+  <meta name="github-repo" content="abigailkeller/eDNAjoint" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Use case 2: jointModel() with site-level covariates | eDNAjoint: an R package for interpreting paired or semi-paired environmental DNA and traditional survey data in a Bayesian framework" />
+  
+  
+  <meta name="twitter:image" content="https://bookdown.org/abigailkeller/eDNAjoint/images/eDNAjoint_logo.png" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="usecase1.html"/>
+<link rel="next" href="usecase3.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">eDNAjoint</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>2</b> Installation</a></li>
+<li class="chapter" data-level="3" data-path="usecase1.html"><a href="usecase1.html"><i class="fa fa-check"></i><b>3</b> Use case 1: basic use of <code>jointModel()</code></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="usecase1.html"><a href="usecase1.html#prepare-the-data"><i class="fa fa-check"></i><b>3.1</b> Prepare the data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="usecase1.html"><a href="usecase1.html#longtowide"><i class="fa fa-check"></i><b>3.1.1</b> Converting data from long to wide</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="usecase1.html"><a href="usecase1.html#fit-the-model"><i class="fa fa-check"></i><b>3.2</b> Fit the model</a></li>
+<li class="chapter" data-level="3.3" data-path="usecase1.html"><a href="usecase1.html#model-selection"><i class="fa fa-check"></i><b>3.3</b> Model selection</a></li>
+<li class="chapter" data-level="3.4" data-path="usecase1.html"><a href="usecase1.html#interpret-the-output"><i class="fa fa-check"></i><b>3.4</b> Interpret the output</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="usecase1.html"><a href="usecase1.html#summarize-posterior-distributions"><i class="fa fa-check"></i><b>3.4.1</b> Summarize posterior distributions</a></li>
+<li class="chapter" data-level="3.4.2" data-path="usecase1.html"><a href="usecase1.html#effort-necessary-to-detect-presence"><i class="fa fa-check"></i><b>3.4.2</b> Effort necessary to detect presence</a></li>
+<li class="chapter" data-level="3.4.3" data-path="usecase1.html"><a href="usecase1.html#calculate-mu_critical"><i class="fa fa-check"></i><b>3.4.3</b> Calculate <span class="math inline">\(\mu_{critical}\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="usecase1.html"><a href="usecase1.html#prior-sensitivity-analysis"><i class="fa fa-check"></i><b>3.5</b> Prior sensitivity analysis</a></li>
+<li class="chapter" data-level="3.6" data-path="usecase1.html"><a href="usecase1.html#initialvalues1"><i class="fa fa-check"></i><b>3.6</b> Initial values</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="usecase2.html"><a href="usecase2.html"><i class="fa fa-check"></i><b>4</b> Use case 2: <code>jointModel()</code> with site-level covariates</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="usecase2.html"><a href="usecase2.html#fit-the-model-1"><i class="fa fa-check"></i><b>4.1</b> Fit the model</a></li>
+<li class="chapter" data-level="4.2" data-path="usecase2.html"><a href="usecase2.html#model-selection-1"><i class="fa fa-check"></i><b>4.2</b> Model selection</a></li>
+<li class="chapter" data-level="4.3" data-path="usecase2.html"><a href="usecase2.html#interpret-the-output-1"><i class="fa fa-check"></i><b>4.3</b> Interpret the output</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="usecase2.html"><a href="usecase2.html#summarize-posterior-distributions-1"><i class="fa fa-check"></i><b>4.3.1</b> Summarize posterior distributions</a></li>
+<li class="chapter" data-level="4.3.2" data-path="usecase2.html"><a href="usecase2.html#effort-necessary-to-detect-presence-1"><i class="fa fa-check"></i><b>4.3.2</b> Effort necessary to detect presence</a></li>
+<li class="chapter" data-level="4.3.3" data-path="usecase2.html"><a href="usecase2.html#calculate-mu_critical-1"><i class="fa fa-check"></i><b>4.3.3</b> Calculate <span class="math inline">\(\mu_{critical}\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="usecase2.html"><a href="usecase2.html#initialvalues2"><i class="fa fa-check"></i><b>4.4</b> Initial values</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="usecase3.html"><a href="usecase3.html"><i class="fa fa-check"></i><b>5</b> Use case 3: <code>jointModel()</code> with multiple traditional gear types</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="usecase3.html"><a href="usecase3.html#prepare-the-data-1"><i class="fa fa-check"></i><b>5.1</b> Prepare the data</a></li>
+<li class="chapter" data-level="5.2" data-path="usecase3.html"><a href="usecase3.html#fit-the-model-2"><i class="fa fa-check"></i><b>5.2</b> Fit the model</a></li>
+<li class="chapter" data-level="5.3" data-path="usecase3.html"><a href="usecase3.html#model-selection-2"><i class="fa fa-check"></i><b>5.3</b> Model selection</a></li>
+<li class="chapter" data-level="5.4" data-path="usecase3.html"><a href="usecase3.html#interpret-the-output-2"><i class="fa fa-check"></i><b>5.4</b> Interpret the output</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="usecase3.html"><a href="usecase3.html#summarize-posterior-distributions-2"><i class="fa fa-check"></i><b>5.4.1</b> Summarize posterior distributions</a></li>
+<li class="chapter" data-level="5.4.2" data-path="usecase3.html"><a href="usecase3.html#effort-necessary-to-detect-presence-2"><i class="fa fa-check"></i><b>5.4.2</b> Effort necessary to detect presence</a></li>
+<li class="chapter" data-level="5.4.3" data-path="usecase3.html"><a href="usecase3.html#calculate-mu_critical-2"><i class="fa fa-check"></i><b>5.4.3</b> Calculate <span class="math inline">\(\mu_{critical}\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="usecase3.html"><a href="usecase3.html#traditionalmodel"><i class="fa fa-check"></i><b>5.5</b> traditionalModel()</a></li>
+<li class="chapter" data-level="5.6" data-path="usecase3.html"><a href="usecase3.html#initialvalues3"><i class="fa fa-check"></i><b>5.6</b> Initial values</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="usecase4.html"><a href="usecase4.html"><i class="fa fa-check"></i><b>6</b> Use case 4: <code>jointModel()</code> with semi-paired data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="usecase4.html"><a href="usecase4.html#simulate-semi-paired-data"><i class="fa fa-check"></i><b>6.1</b> Simulate semi-paired data</a></li>
+<li class="chapter" data-level="6.2" data-path="usecase4.html"><a href="usecase4.html#prepare-the-data-2"><i class="fa fa-check"></i><b>6.2</b> Prepare the data</a></li>
+<li class="chapter" data-level="6.3" data-path="usecase4.html"><a href="usecase4.html#fit-the-model-3"><i class="fa fa-check"></i><b>6.3</b> Fit the model</a></li>
+<li class="chapter" data-level="6.4" data-path="usecase4.html"><a href="usecase4.html#interpret-the-output-3"><i class="fa fa-check"></i><b>6.4</b> Interpret the output</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="usecase4.html"><a href="usecase4.html#summarize-posterior-distributions-3"><i class="fa fa-check"></i><b>6.4.1</b> Summarize posterior distributions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="usecase4.html"><a href="usecase4.html#initialvalues4"><i class="fa fa-check"></i><b>6.5</b> Initial values</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>7</b> The model</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="model.html"><a href="model.html#modeldescription"><i class="fa fa-check"></i><b>7.1</b> Model description</a></li>
+<li class="chapter" data-level="7.2" data-path="model.html"><a href="model.html#bayesian-modeling-stan"><i class="fa fa-check"></i><b>7.2</b> Bayesian modeling: Stan</a></li>
+<li class="chapter" data-level="7.3" data-path="model.html"><a href="model.html#priors"><i class="fa fa-check"></i><b>7.3</b> Priors</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="tips.html"><a href="tips.html"><i class="fa fa-check"></i><b>8</b> Tips</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="tips.html"><a href="tips.html#visualization-tips"><i class="fa fa-check"></i><b>8.1</b> Visualization tips</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="tips.html"><a href="tips.html#posterior-samples"><i class="fa fa-check"></i><b>8.1.1</b> Posterior samples</a></li>
+<li class="chapter" data-level="8.1.2" data-path="tips.html"><a href="tips.html#chain-convergence"><i class="fa fa-check"></i><b>8.1.2</b> Chain convergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="tips.html"><a href="tips.html#shinystan"><i class="fa fa-check"></i><b>8.1.3</b> Shinystan</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="tips.html"><a href="tips.html#troubleshooting-tips"><i class="fa fa-check"></i><b>8.2</b> Troubleshooting tips</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="tips.html"><a href="tips.html#quick-tips"><i class="fa fa-check"></i><b>8.2.1</b> Quick tips</a></li>
+<li class="chapter" data-level="8.2.2" data-path="tips.html"><a href="tips.html#initial-values"><i class="fa fa-check"></i><b>8.2.2</b> Initial values</a></li>
+<li class="chapter" data-level="8.2.3" data-path="tips.html"><a href="tips.html#changing-priors"><i class="fa fa-check"></i><b>8.2.3</b> Changing priors</a></li>
+<li class="chapter" data-level="8.2.4" data-path="tips.html"><a href="tips.html#adding-site-level-covariates"><i class="fa fa-check"></i><b>8.2.4</b> Adding site-level covariates</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="citation.html"><a href="citation.html"><i class="fa fa-check"></i><b>9</b> Citation</a></li>
+<li class="chapter" data-level="10" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>10</b> References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">eDNAjoint: an R package for interpreting paired or semi-paired environmental DNA and traditional survey data in a Bayesian framework</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="usecase2" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Use case 2: <code>jointModel()</code> with site-level covariates<a href="usecase2.html#usecase2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This second use case uses the same goby data as in <a href="usecase1.html#usecase1">use case 1</a>, except this time we will include site-level covariates that affect the sensitivity of eDNA relative to traditional surveys.</p>
+<p><br></p>
+<p><img src="images/basic_diagram_covariates-01.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="usecase2.html#cb43-1" tabindex="-1"></a><span class="fu">library</span>(eDNAjoint)</span>
+<span id="cb43-2"><a href="usecase2.html#cb43-2" tabindex="-1"></a><span class="fu">data</span>(gobyData)</span></code></pre></div>
+<p>In addition to count and qPCR data, the goby data includes site-level covariates, which is optional when implementing <code>jointModel()</code>. Here, the data represent salinity, mean time to filter eDNA samples, density of other fish, habitat size, and vegetation presence at each site. Two important notes:</p>
+<ol style="list-style-type: decimal">
+<li><p>Notice that the continuous covariate data is standardized. This is useful since this data will be used in a linear regression. Similarly, one should use dummy variables for categorical variables (like the ‘Veg’ variable).</p></li>
+<li><p>The columns in the matrix should be named, since these identifiers will be used when fitting the model.</p></li>
+</ol>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="usecase2.html#cb44-1" tabindex="-1"></a><span class="fu">head</span>(gobyData<span class="sc">$</span>site.cov)</span></code></pre></div>
+<pre><code>##        Salinity Filter_time Other_fishes   Hab_size Veg
+## [1,] -0.7114925       -1.17          0.0 -0.2715560   0
+## [2,] -0.2109183       -1.24          0.0 -0.2663009   0
+## [3,] -1.1602831       -1.29          0.0 -0.2717707   0
+## [4,] -0.5561419        0.11        160.9 -0.2164312   1
+## [5,] -0.9876713       -0.70        113.0  4.9981956   1
+## [6,]  1.2562818       -0.55         19.3 -0.2934710   0</code></pre>
+<p>For more data formatting guidance, see <a href="usecase1.html#longtowide">section 2.1.1</a>.</p>
+<div id="fit-the-model-1" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Fit the model<a href="usecase2.html#fit-the-model-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now that we understand our data, let’s fit the joint model. The key arguments of this function include:</p>
+<ol style="list-style-type: decimal">
+<li>data: list of <code>qPCR.K</code>, <code>qPCR.N</code>, <code>count</code>, and <code>site.cov</code> matrices</li>
+<li>cov: character vector of site-level covariates (this model will only include mean eDNA sample filter time and salinity)</li>
+<li>family: probability distribution used to model the seine count data. A poisson distribution is chosen here.</li>
+<li>p10priors: Beta distribution parameters for the prior on the probability of false positive eDNA detection, <span class="math inline">\(p_{10}\)</span>. c(1,20) is the default specification. More on this later.</li>
+<li>q: logical value indicating the presence of multiple traditional gear types. Here, we’re only using data from one traditional method.</li>
+</ol>
+<p>More parameters exist to further customize the MCMC sampling, but we’ll stick with the defaults.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="usecase2.html#cb46-1" tabindex="-1"></a><span class="co"># run the joint model with two covariates</span></span>
+<span id="cb46-2"><a href="usecase2.html#cb46-2" tabindex="-1"></a>goby.fit.cov1 <span class="ot">&lt;-</span> <span class="fu">jointModel</span>(<span class="at">data =</span> gobyData, <span class="at">cov=</span><span class="fu">c</span>(<span class="st">&#39;Filter_time&#39;</span>,<span class="st">&#39;Salinity&#39;</span>), </span>
+<span id="cb46-3"><a href="usecase2.html#cb46-3" tabindex="-1"></a>                            <span class="at">family =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">p10priors =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">20</span>), <span class="at">q=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p><code>goby.fit.cov1</code> is a list containing:</p>
+<ol style="list-style-type: decimal">
+<li>model fit (<code>goby.fit.cov1$model</code>) of the class ‘stanfit’ and can be accessed and interpreted using all functions in the <a href="https://mc-stan.org/rstan/">rstan</a> package.</li>
+<li>initial values used for each chain in MCMC (<code>goby.fit.cov1$inits</code>)</li>
+</ol>
+</div>
+<div id="model-selection-1" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Model selection<a href="usecase2.html#model-selection-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We previously made a choice to include two site-level covariates. Perhaps we want to test how that model specification compares to a model specification with different site-level covariates.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="usecase2.html#cb47-1" tabindex="-1"></a><span class="co"># fit a new model with one site-level covariate</span></span>
+<span id="cb47-2"><a href="usecase2.html#cb47-2" tabindex="-1"></a>goby.fit.cov2 <span class="ot">&lt;-</span> <span class="fu">jointModel</span>(<span class="at">data =</span> gobyData, <span class="at">cov=</span><span class="st">&#39;Other_fishes&#39;</span>,</span>
+<span id="cb47-3"><a href="usecase2.html#cb47-3" tabindex="-1"></a>                            <span class="at">family =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">p10priors =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">20</span>), <span class="at">q=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p>We can now compare the fit of these model to our data using the <code>jointSelect()</code> function, which performs leave-one-out cross validation with functions from the <code>loo</code> package.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="usecase2.html#cb48-1" tabindex="-1"></a><span class="co"># perform model selection</span></span>
+<span id="cb48-2"><a href="usecase2.html#cb48-2" tabindex="-1"></a><span class="fu">jointSelect</span>(<span class="at">modelfits =</span> <span class="fu">list</span>(goby.fit.cov1<span class="sc">$</span>model, goby.fit.cov2<span class="sc">$</span>model))</span></code></pre></div>
+<pre><code>##        elpd_diff se_diff
+## model1   0.0       0.0  
+## model2 -27.9      23.8</code></pre>
+<p>These results tell us that model1 has a higher Bayesian LOO estimate of the expected log pointwise predictive density (<a href="https://mc-stan.org/loo/reference/loo-glossary.html">elpd_loo</a>). This means that <code>goby.fit.cov1</code> is likely a better fit to the data.</p>
+<p>You could keep going with this further and include/exclude different covariates, or compare to a null model without covariates.</p>
+</div>
+<div id="interpret-the-output-1" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Interpret the output<a href="usecase2.html#interpret-the-output-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="summarize-posterior-distributions-1" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Summarize posterior distributions<a href="usecase2.html#summarize-posterior-distributions-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s interpret <code>goby.fit.cov1</code>. Use <code>jointSummarize()</code> to see the posterior summaries of the model parameters.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="usecase2.html#cb50-1" tabindex="-1"></a><span class="fu">jointSummarize</span>(goby.fit.cov1<span class="sc">$</span>model, <span class="at">par =</span> <span class="fu">c</span>(<span class="st">&#39;p10&#39;</span>,<span class="st">&#39;alpha&#39;</span>))</span></code></pre></div>
+<pre><code>##            mean se_mean    sd   2.5%  97.5%     n_eff Rhat
+## p10       0.003   0.000 0.001  0.001  0.007 17936.752    1
+## alpha[1]  0.542   0.001 0.099  0.350  0.734 10214.238    1
+## alpha[2]  1.021   0.001 0.118  0.788  1.249  9351.836    1
+## alpha[3] -0.349   0.001 0.107 -0.559 -0.133 11165.492    1</code></pre>
+<p>This summarizes the mean, sd, and quantiles of the posterior estimates of <span class="math inline">\(p_{10}\)</span> and <span class="math inline">\(\alpha\)</span>, as well as the effective sample size (n_eff) and Rhat for the parameters.</p>
+<p>The mean estimated probability of a false positive eDNA detection is 0.001. In <a href="usecase1.html#usecase1">use case 1</a>, the scalar parameter <span class="math inline">\(\beta\)</span> was used to scale the relationship between eDNA and traditional sampling, but now the vector <span class="math inline">\(\alpha\)</span> represents the regression covariates that scales this relationship (see <a href="model.html#modeldescription">model description</a> for more). <code>alpha[1]</code> corresponds to the intercept of the regression with site-level covariates. <code>alpha[2]</code> corresponds to the regression coefficient associated with <code>Filter_time</code>, and <code>alpha[3]</code> corresponds to the regression coefficient associated with <code>Salinity</code>. Positive regression coefficients indicate an inverse relationship between the covariate and eDNA sensitivity.</p>
+<p>We can also use functions from the <code>bayesplot</code> package to examine the posterior distributions and chain convergence.</p>
+<p>First let’s look at the posterior distribution for <span class="math inline">\(p_{10}\)</span>.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="usecase2.html#cb52-1" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb52-2"><a href="usecase2.html#cb52-2" tabindex="-1"></a><span class="co"># plot posterior distribution, highlighting median and 80% credibility interval</span></span>
+<span id="cb52-3"><a href="usecase2.html#cb52-3" tabindex="-1"></a><span class="fu">mcmc_areas</span>(<span class="fu">as.matrix</span>(goby.fit.cov1<span class="sc">$</span>model), <span class="at">pars =</span> <span class="st">&#39;p10&#39;</span>, <span class="at">prob =</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p>Next let’s look at chain convergence for <span class="math inline">\(p_{10}\)</span> and <span class="math inline">\(\mu_{i=1}\)</span>.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="usecase2.html#cb53-1" tabindex="-1"></a><span class="co"># this will plot the MCMC chains for p10 and mu at site 1</span></span>
+<span id="cb53-2"><a href="usecase2.html#cb53-2" tabindex="-1"></a><span class="fu">mcmc_trace</span>(rstan<span class="sc">::</span><span class="fu">extract</span>(goby.fit.cov1<span class="sc">$</span>model, <span class="at">permuted =</span> <span class="cn">FALSE</span>), </span>
+<span id="cb53-3"><a href="usecase2.html#cb53-3" tabindex="-1"></a>           <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">&#39;p10&#39;</span>, <span class="st">&#39;mu[1]&#39;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+</div>
+<div id="effort-necessary-to-detect-presence-1" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Effort necessary to detect presence<a href="usecase2.html#effort-necessary-to-detect-presence-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To further highlight the relative sensitivity of eDNA and traditional sampling, we can use <code>detectionCalculate()</code> to find the units of survey effort necessary to detect presence of the species. Here, detecting presence refers to producing at least one true positive eDNA detection or catching at least one individual in a traditional survey.</p>
+<p>This function is finding the median number of survey units necessary to detect species presence if the expected catch rate, <span class="math inline">\(\mu\)</span> is 0.1, 0.5, or 1. The <code>cov.val</code> argument indicates the value of the covariates used for the prediction. Since the covariate data was standardized, c(0,0) indicates that the prediction is made at the mean <code>Filter_time</code> and <code>Salinity</code> values.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="usecase2.html#cb54-1" tabindex="-1"></a><span class="fu">detectionCalculate</span>(goby.fit.cov1<span class="sc">$</span>model, <span class="at">mu=</span><span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="dv">1</span>), </span>
+<span id="cb54-2"><a href="usecase2.html#cb54-2" tabindex="-1"></a>                   <span class="at">cov.val =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">probability =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<pre><code>##       mu n_traditional n_eDNA
+## [1,] 0.1            24     14
+## [2,] 0.5             5      4
+## [3,] 1.0             3      2</code></pre>
+<p>We can see that at the mean covariate values, it takes 14 eDNA samples or 24 seine samples to detect goby presence with 0.9 probability if the expected catch rate is 0.1.</p>
+<p>Now let’s perform the same calculation under a condition where the <code>Filter_time</code> covariate value is 0.5 z-scores above the mean.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="usecase2.html#cb56-1" tabindex="-1"></a><span class="fu">detectionCalculate</span>(goby.fit.cov1<span class="sc">$</span>model, <span class="at">mu=</span><span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="dv">1</span>), </span>
+<span id="cb56-2"><a href="usecase2.html#cb56-2" tabindex="-1"></a>                   <span class="at">cov.val =</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">0</span>), <span class="at">probability =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<pre><code>##       mu n_traditional n_eDNA
+## [1,] 0.1            24     23
+## [2,] 0.5             5      5
+## [3,] 1.0             3      3</code></pre>
+<p>At sites with a longer eDNA sample filter time, it would now take 22 eDNA samples or 24 seine samples to detect goby presence if the expected catch rate is 0.1.</p>
+<p>Let’s do the same for salinity.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="usecase2.html#cb58-1" tabindex="-1"></a><span class="fu">detectionCalculate</span>(goby.fit.cov1<span class="sc">$</span>model, <span class="at">mu=</span><span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="dv">1</span>), </span>
+<span id="cb58-2"><a href="usecase2.html#cb58-2" tabindex="-1"></a>                   <span class="at">cov.val =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.5</span>), <span class="at">probability =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<pre><code>##       mu n_traditional n_eDNA
+## [1,] 0.1            24     12
+## [2,] 0.5             5      3
+## [3,] 1.0             3      2</code></pre>
+<p>At sites with higher salinity, it would now take 12 eDNA samples or 24 seine samples to detect goby presence if the expected catch rate is 0.1.</p>
+<p>We can also plot these comparisons. <code>mu.min</code> and <code>mu.max</code> define the x-axis in the plot.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="usecase2.html#cb60-1" tabindex="-1"></a><span class="fu">detectionPlot</span>(goby.fit.cov1<span class="sc">$</span>model, <span class="at">mu.min=</span><span class="fl">0.1</span>, <span class="at">mu.max =</span><span class="dv">1</span>, </span>
+<span id="cb60-2"><a href="usecase2.html#cb60-2" tabindex="-1"></a>              <span class="at">cov.val =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">probability =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+</div>
+<div id="calculate-mu_critical-1" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> Calculate <span class="math inline">\(\mu_{critical}\)</span><a href="usecase2.html#calculate-mu_critical-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The probability of a true positive eDNA detection, <span class="math inline">\(p_{11}\)</span>, is a function of the expected catch rate, <span class="math inline">\(\mu\)</span>. Low values of <span class="math inline">\(\mu\)</span> correspond to low probability of eDNA detection. Since the probability of a false-positive eDNA detection is non-zero, the probability of a false positive detection may be higher than the probability of a true positive detection at very low values of <span class="math inline">\(\mu\)</span>.</p>
+<p><span class="math inline">\(\mu_{critical}\)</span> describes the value of <span class="math inline">\(\mu\)</span> where the probability of a false positive eDNA detection equals the probability of a true positive eDNA detection. This value can be calculated using <code>muCritical()</code>. Here, we will calculate this value at the mean covariate values.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="usecase2.html#cb61-1" tabindex="-1"></a><span class="fu">muCritical</span>(goby.fit.cov1<span class="sc">$</span>model, <span class="at">cov.val =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">ci =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<pre><code>## $median
+## [1] 0.005294315
+## 
+## $lower_ci
+## Highest Density Interval: 1.69e-03
+## 
+## $upper_ci
+## Highest Density Interval: 9.60e-03</code></pre>
+<p>This function calculates <span class="math inline">\(\mu_{critical}\)</span> using the entire posterior distributions of parameters from the model, and ‘HDI’ corresponds to the 90% credibility interval calculated using the highest density interval.</p>
+</div>
+</div>
+<div id="initialvalues2" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Initial values<a href="usecase2.html#initialvalues2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>By default, <code>eDNAjoint</code> will provide initial values for parameters estimated by the model, but you can provide your own initial values if you prefer. Here is an example of providing initial values for parameters, <code>mu</code>,<code>p10</code>, and <code>alpha</code>, as an input in <code>jointModel()</code>.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="usecase2.html#cb63-1" tabindex="-1"></a><span class="co"># set number of chains</span></span>
+<span id="cb63-2"><a href="usecase2.html#cb63-2" tabindex="-1"></a>n.chain <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb63-3"><a href="usecase2.html#cb63-3" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="usecase2.html#cb63-4" tabindex="-1"></a><span class="co"># initial values should be a list of named lists</span></span>
+<span id="cb63-5"><a href="usecase2.html#cb63-5" tabindex="-1"></a>inits <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb63-6"><a href="usecase2.html#cb63-6" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.chain){</span>
+<span id="cb63-7"><a href="usecase2.html#cb63-7" tabindex="-1"></a>  inits[[i]] <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb63-8"><a href="usecase2.html#cb63-8" tabindex="-1"></a>    <span class="co"># length should equal the number of sites (dim(gobyData$count)[1]) for each chain</span></span>
+<span id="cb63-9"><a href="usecase2.html#cb63-9" tabindex="-1"></a>    <span class="at">mu =</span> stats<span class="sc">::</span><span class="fu">runif</span>(<span class="fu">dim</span>(gobyData<span class="sc">$</span>count)[<span class="dv">1</span>], <span class="fl">0.01</span>, <span class="dv">5</span>), </span>
+<span id="cb63-10"><a href="usecase2.html#cb63-10" tabindex="-1"></a>    <span class="co"># length should equal 1 for each chain </span></span>
+<span id="cb63-11"><a href="usecase2.html#cb63-11" tabindex="-1"></a>    <span class="at">p10 =</span> stats<span class="sc">::</span><span class="fu">runif</span>(<span class="dv">1</span>,<span class="fl">0.0001</span>,<span class="fl">0.08</span>),</span>
+<span id="cb63-12"><a href="usecase2.html#cb63-12" tabindex="-1"></a>    <span class="co"># length should equal the number of covariates plus 1 (to account for intercept in regression)</span></span>
+<span id="cb63-13"><a href="usecase2.html#cb63-13" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fu">rep</span>(<span class="fl">0.1</span>,<span class="fu">length</span>(<span class="fu">c</span>(<span class="st">&#39;Filter_time&#39;</span>,<span class="st">&#39;Salinity&#39;</span>))<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb63-14"><a href="usecase2.html#cb63-14" tabindex="-1"></a>    )</span>
+<span id="cb63-15"><a href="usecase2.html#cb63-15" tabindex="-1"></a>}</span>
+<span id="cb63-16"><a href="usecase2.html#cb63-16" tabindex="-1"></a></span>
+<span id="cb63-17"><a href="usecase2.html#cb63-17" tabindex="-1"></a><span class="co"># now fit the model</span></span>
+<span id="cb63-18"><a href="usecase2.html#cb63-18" tabindex="-1"></a>fit.w.inits <span class="ot">&lt;-</span> <span class="fu">jointModel</span>(<span class="at">data =</span> gobyData, <span class="at">cov=</span><span class="fu">c</span>(<span class="st">&#39;Filter_time&#39;</span>,<span class="st">&#39;Salinity&#39;</span>),</span>
+<span id="cb63-19"><a href="usecase2.html#cb63-19" tabindex="-1"></a>                          <span class="at">initial_values =</span> inits)</span></code></pre></div>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;joint_binary_cov_pois&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.0001 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 3000 [  0%]  (Warmup)
+## Chain 1: Iteration:  500 / 3000 [ 16%]  (Warmup)
+## Chain 1: Iteration:  501 / 3000 [ 16%]  (Sampling)
+## Chain 1: Iteration: 1000 / 3000 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1500 / 3000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 2000 / 3000 [ 66%]  (Sampling)
+## Chain 1: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+## Chain 1: Iteration: 3000 / 3000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 2.402 seconds (Warm-up)
+## Chain 1:                4.639 seconds (Sampling)
+## Chain 1:                7.041 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &#39;joint_binary_cov_pois&#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 9.2e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.92 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 3000 [  0%]  (Warmup)
+## Chain 2: Iteration:  500 / 3000 [ 16%]  (Warmup)
+## Chain 2: Iteration:  501 / 3000 [ 16%]  (Sampling)
+## Chain 2: Iteration: 1000 / 3000 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1500 / 3000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 2000 / 3000 [ 66%]  (Sampling)
+## Chain 2: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+## Chain 2: Iteration: 3000 / 3000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 2.029 seconds (Warm-up)
+## Chain 2:                4.233 seconds (Sampling)
+## Chain 2:                6.262 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &#39;joint_binary_cov_pois&#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 9.4e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.94 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 3000 [  0%]  (Warmup)
+## Chain 3: Iteration:  500 / 3000 [ 16%]  (Warmup)
+## Chain 3: Iteration:  501 / 3000 [ 16%]  (Sampling)
+## Chain 3: Iteration: 1000 / 3000 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1500 / 3000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 2000 / 3000 [ 66%]  (Sampling)
+## Chain 3: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+## Chain 3: Iteration: 3000 / 3000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 2.384 seconds (Warm-up)
+## Chain 3:                4.396 seconds (Sampling)
+## Chain 3:                6.78 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &#39;joint_binary_cov_pois&#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0.000205 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 2.05 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 3000 [  0%]  (Warmup)
+## Chain 4: Iteration:  500 / 3000 [ 16%]  (Warmup)
+## Chain 4: Iteration:  501 / 3000 [ 16%]  (Sampling)
+## Chain 4: Iteration: 1000 / 3000 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1500 / 3000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 2000 / 3000 [ 66%]  (Sampling)
+## Chain 4: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+## Chain 4: Iteration: 3000 / 3000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 1.837 seconds (Warm-up)
+## Chain 4:                4.529 seconds (Sampling)
+## Chain 4:                6.366 seconds (Total)
+## Chain 4: 
+## Refer to the eDNAjoint guide for visualization tips:  https://bookdown.org/abigailkeller/eDNAjoint_vignette/tips.html#visualization-tips</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="usecase2.html#cb65-1" tabindex="-1"></a><span class="co"># check to see the initial values that were used</span></span>
+<span id="cb65-2"><a href="usecase2.html#cb65-2" tabindex="-1"></a>fit.w.inits<span class="sc">$</span>inits</span></code></pre></div>
+<pre><code>## $chain1
+## $chain1$mu_trad
+##  [1] 2.04393687 2.13858200 0.83867409 1.82922529 4.21995384 1.38082632 4.28211934
+##  [8] 3.53658081 4.16123419 3.76859712 1.33127074 4.55114092 2.33118368 0.81521753
+## [15] 4.47183180 2.04776085 2.64797997 0.66674815 1.39890668 1.00416212 0.68292900
+## [22] 3.09098650 0.59747924 2.53917391 1.64250020 4.37446245 0.11000119 0.08903043
+## [29] 0.49631369 1.36427525 1.63104675 2.30288276 4.69588402 0.60685573 3.98933093
+## [36] 4.26983533 4.46034743 0.47263531 0.89076780
+## 
+## $chain1$mu
+##  [1] 2.04393687 2.13858200 0.83867409 1.82922529 4.21995384 1.38082632 4.28211934
+##  [8] 3.53658081 4.16123419 3.76859712 1.33127074 4.55114092 2.33118368 0.81521753
+## [15] 4.47183180 2.04776085 2.64797997 0.66674815 1.39890668 1.00416212 0.68292900
+## [22] 3.09098650 0.59747924 2.53917391 1.64250020 4.37446245 0.11000119 0.08903043
+## [29] 0.49631369 1.36427525 1.63104675 2.30288276 4.69588402 0.60685573 3.98933093
+## [36] 4.26983533 4.46034743 0.47263531 0.89076780
+## 
+## $chain1$log_p10
+## [1] -3.772597
+## 
+## $chain1$alpha
+## [1] 0.1 0.1 0.1
+## 
+## 
+## $chain2
+## $chain2$mu_trad
+##  [1] 3.01635005 2.06144046 4.83685517 1.67723976 2.74920443 0.07283268 0.94866626
+##  [8] 4.02085528 3.78160175 2.44499350 0.93607497 2.77077091 2.78276236 4.13368673
+## [15] 0.78000261 0.88399910 3.33101891 4.96586164 3.27106349 0.40887031 1.86665386
+## [22] 2.04405172 3.07021541 0.62712856 4.18949439 4.20857730 1.62403515 1.51708704
+## [29] 3.71060991 1.33882569 0.59757919 0.30688147 0.02004547 1.31292310 0.11612407
+## [36] 1.79071353 2.38124515 0.26818945 3.27737829
+## 
+## $chain2$mu
+##  [1] 3.01635005 2.06144046 4.83685517 1.67723976 2.74920443 0.07283268 0.94866626
+##  [8] 4.02085528 3.78160175 2.44499350 0.93607497 2.77077091 2.78276236 4.13368673
+## [15] 0.78000261 0.88399910 3.33101891 4.96586164 3.27106349 0.40887031 1.86665386
+## [22] 2.04405172 3.07021541 0.62712856 4.18949439 4.20857730 1.62403515 1.51708704
+## [29] 3.71060991 1.33882569 0.59757919 0.30688147 0.02004547 1.31292310 0.11612407
+## [36] 1.79071353 2.38124515 0.26818945 3.27737829
+## 
+## $chain2$log_p10
+## [1] -3.080158
+## 
+## $chain2$alpha
+## [1] 0.1 0.1 0.1
+## 
+## 
+## $chain3
+## $chain3$mu_trad
+##  [1] 0.8794226 1.0186518 3.7261763 3.1065839 1.7779727 4.7689924 0.5885190 4.8133300
+##  [9] 4.6733623 1.5499288 0.7457254 3.1389496 0.7198004 1.1160017 3.1807162 2.1938935
+## [17] 4.6646939 1.5674118 3.7160366 2.0399502 3.4711256 1.8639314 4.9833057 4.0642200
+## [25] 0.7002595 0.2942121 3.8189961 0.7851154 2.5977143 3.9956082 3.7263295 1.1804083
+## [33] 1.9211221 3.9175265 4.6037509 3.9741671 2.4296695 0.3311350 0.3262873
+## 
+## $chain3$mu
+##  [1] 0.8794226 1.0186518 3.7261763 3.1065839 1.7779727 4.7689924 0.5885190 4.8133300
+##  [9] 4.6733623 1.5499288 0.7457254 3.1389496 0.7198004 1.1160017 3.1807162 2.1938935
+## [17] 4.6646939 1.5674118 3.7160366 2.0399502 3.4711256 1.8639314 4.9833057 4.0642200
+## [25] 0.7002595 0.2942121 3.8189961 0.7851154 2.5977143 3.9956082 3.7263295 1.1804083
+## [33] 1.9211221 3.9175265 4.6037509 3.9741671 2.4296695 0.3311350 0.3262873
+## 
+## $chain3$log_p10
+## [1] -2.8294
+## 
+## $chain3$alpha
+## [1] 0.1 0.1 0.1
+## 
+## 
+## $chain4
+## $chain4$mu_trad
+##  [1] 4.4877811 2.1727203 4.8477993 4.9769401 2.1355919 2.4980598 1.1584333 2.0122739
+##  [9] 4.6931959 1.6861870 1.4401861 2.4905163 1.2097323 2.1351682 0.9459020 2.8799340
+## [17] 2.7651233 3.4719783 4.5412596 3.0174997 2.6866175 4.1852320 3.0637430 2.9050648
+## [25] 2.7907714 4.7318266 0.5644405 1.6773707 0.3710265 1.7159281 0.2033197 2.6271268
+## [33] 4.0964929 0.1488295 4.8786893 0.3042488 3.2843939 2.6484452 1.3460973
+## 
+## $chain4$mu
+##  [1] 4.4877811 2.1727203 4.8477993 4.9769401 2.1355919 2.4980598 1.1584333 2.0122739
+##  [9] 4.6931959 1.6861870 1.4401861 2.4905163 1.2097323 2.1351682 0.9459020 2.8799340
+## [17] 2.7651233 3.4719783 4.5412596 3.0174997 2.6866175 4.1852320 3.0637430 2.9050648
+## [25] 2.7907714 4.7318266 0.5644405 1.6773707 0.3710265 1.7159281 0.2033197 2.6271268
+## [33] 4.0964929 0.1488295 4.8786893 0.3042488 3.2843939 2.6484452 1.3460973
+## 
+## $chain4$log_p10
+## [1] -3.553015
+## 
+## $chain4$alpha
+## [1] 0.1 0.1 0.1</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="usecase1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="usecase3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
